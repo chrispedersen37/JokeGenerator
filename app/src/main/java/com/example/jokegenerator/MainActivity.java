@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.jokegenerator.model.Joke;
@@ -20,14 +21,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void postJoke(View view){
+        ProgressBar progressBar = findViewById(R.id.pbLoadingJoke);
+        progressBar.setVisibility(View.VISIBLE);
+
         JokeModel model = new JokeModel();
         model.getJoke(new JokeModel.GetJokeResponseHandler() {
             @Override
             public void response(Joke joke) {
                 TextView jokebox = findViewById(R.id.lblJoke);
                 if(joke.type.equals("twopart")){
+                    progressBar.setVisibility(View.GONE);
                     jokebox.setText(joke.setup + "\n \n" + joke.delivery);
                 } else {
+                    progressBar.setVisibility(View.GONE);
                     jokebox.setText(joke.joke);
                 }
 
